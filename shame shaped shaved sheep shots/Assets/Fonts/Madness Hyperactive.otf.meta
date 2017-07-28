@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 561520400d11dd24aa9e6fa3a1ae7560
+timeCreated: 1500832048
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Madness Hyperactive
+  fontNames:
+  - Madness Hyperactive
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
