@@ -1,0 +1,57 @@
+Link do filmiku: https://youtu.be/bMpw5GGRV2c
+
+Projekt zrealizowałem w Unity ver. 5.6.0.
+
+Główna scena, czyli Battleground jest obsługiwana przez RoundHandlera, który jest rodzicem wszystkich obiektów (poza Main Camerą) w tej scenie.
+Ułatwia to dostęp do poszczególnych elementów (nawet jeżeli nie zostały jeszcze oskryptowane, z myślą o rozwoju gry).
+
+Gra wykorzystuje system rund - aby zwyciężyć jeden z graczy musi wygrać 2 rundy. W razie braku rozstrzygnięcia walka może trwać 3 rundy, lecz w przypadku
+potrójnego remisu walka kończy się bez wyłonienia zwycięzcy.
+
+Postacie którymi sterują gracze lub gracz i komputer mają poświęcone 4 skrypty, tj:
+
+-CharacterPhysics, który zajmuje się odczytywaniem utraty życia z HitBoxów (głowa lub ciało), oraz obsługą stanów w jakich znajdują się postacie.
+
+-PlayerController, który stanowi warstwę abstrakcji dla sterowania postaciami, posiada zbiór triggerów, na których podstawie wykonuje określone akcje
+oraz uruchamia odpowiednie animacje.
+
+-VirtualController, który jest interfejsem dla gracza do sterowania postacią, w zależności od wykrytego typu gracza (player1, player2), przypisuje triggerom
+z PlayerControllera odpowiednie klawisze które je wywołują.
+
+-AIHandler (tylko postać nr2), zastępuje VirtualController w przypadku wyboru opcji PlayerVsComputer. Zarządza triggerami PlayerControllera z częstością
+i rozpiętością działań zależną od wybranego poziomu trudności (np. dla poziomu trudnego oprócz ataków również blokuje ataki przeciwnika).
+
+Gracze mogą zadawać ciosy stojąc, w trakcie kucania lub z wyskoku. Trafienie w głowę zabiera więcej punktów życia niż trafienie w resztę ciała.
+Dodatkowo obrażenia mogą zostać zmniejszone przez odpowiedni blok (blok stojąc zasłania głowę, kucając - ciało).
+
+Zadawanie ciosu odbywa się (oprócz uruchomienia animacji) poprzez aktywowanie odpowiedniego line collidera na czas jednej klatki, na który wyczulone są
+hitboxy (które bądź co bądź są prostokątnymi colliderami). Po wykryciu przecięcia z hitboxem obrażenia są liczone w jego skrypcie, a następnie odczytywane 
+przez skrypt CharacterPhysics - odejmowana jest odpowiednia ilość życia ustawiana w interfejsie Unity (odpowiednio zmniejszona jeżeli gracz zasłonił 
+odpowiednią część ciała).
+
+Przy uderzeniu, jeżeli wykonamy cios "z rozbiegu", do ofiary dodawana jest siła pod kątem 45 stopni liczona na podstawie prędkości względnej postaci zadającej cios.
+Dzięki temu uzyskałem efekt odrzutu przez co rozgrywka jest bardziej urozmaicona.
+
+Pozostałe oskryptowane obiekty to między innymi health bary, licznik czasu, sędzia, który na początku rundy odlicza 3 sekundy do startu a na jej końcu
+ogłasza zwycięzcę, menu pauzy które przy aktywacji jednocześnie dezaktywuje elementy UI które mogłyby rozproszyc uwagę gracza, buttony menu, animacja
+chodzenia (aktywuje dźwięk kroków).
+
+W niektórych skryptach wykorzystałem funkcję StartCoroutine(), oraz siłą rzeczy funkcję o typie zwracanym IENumerator, dzięki czemu mogłem uzyskać efekt 
+opóźnienia (jak np. przy skoku i animacji uginania nóg przed wybiciem), lub oczekiwania (jak przy AIHandlerze i czasie uzależnionym od wybranego poziomu 
+truidności).
+
+Wszędzie gdzie pola klas nie były wykorzystywane poza klasą mają one prywatne prawa dostępu, w innym przypadku w każdym ze skryptów wykorzystywałem mechanizm
+automatycznie implementowanych właściwości (auto-implemented properties). Dodatkowo, jeżeli dana właściwość nie potrzebowała settera, korzystałem z 
+private set; (niestety Unity dalej korzysta z C# 4, więc nie mogłem użyć właściwości posiadających tylko gettery). Jedynymi wyjątkami sa pola publiczne 
+które dzięki mechanizmom silnika Unity ułatwiały mi konfigurację parametrów zmieniających dynamikę rozgrywki (kick cooldown, punch cooldown, recoil,
+ilość życia zabierana przez poszczególne ciosy itp.), tudzież zarządzanie gameObjectami bez konieczności podróży przez całe drzewo hierarchii (mechanizm 
+drag & drop).
+
+Sprity oraz dźwięki wykonałem sam, dla części zachowań wykorzystałem animator z drzewem stanów i odpowiednimi warunkami przejść.
+
+W Menu Głównym, oknie z wyjaśnionym sterowaniem, oraz w czasie walki możemy usłyszeć w tle 3 różne utwory.
+
+Starałem się stosować do wytycznych odnośnie nazewnictwa z C# Reference Microsoftu.
+
+Podsumowując, wszystkie przedstawione we wstępnym opisie pomysły zostały zrealizowane, w trakcie pracy uznałem również, że dobrym pomysłem będzie wprowadzenie
+systemu rund, odrzutu przy uderzeniach oraz poziomów trudności dla walki z komputerem.
