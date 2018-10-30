@@ -1,9 +1,0 @@
-Zamierzam napisać grę 2D z gatunku bijatyk. 
-
-Wykorzystam Unity, gra będzie umożliwiała grę z komputerem lub w 2 osoby.
-
-Prosta grafika 2D oparta na wielokątach, 2 postacie sterowane strzałkami/WSAD, po lewej i prawej stronie ekranu health bary, po środku licznik
-czasu walki (ograniczający czas jej trwania). 
-Możliwość uderzenia ręką lub nogą (2 klawisze, różne ciosy w zależnosci od kombinacji ze strzałkami).
-
-2 tryby gry - gra z komputerem, z drugim graczem na jednym komputerze.
